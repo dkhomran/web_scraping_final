@@ -33,30 +33,61 @@ def list_and_display_tables(request):
 
 
 
+# def display_table(request, table_name):
+#     with connection.cursor() as cursor:
+#         sort_column = request.GET.get('sort', 'date_ajout')
+#         sort_order = request.GET.get('order', 'desc')
+
+#         order_symbol = '-' if sort_order == 'desc' else ''
+
+#         query = f"SELECT * FROM {table_name} ORDER BY {order_symbol}{sort_column}"
+        
+#         search_date_start = request.GET.get('search_date_start')
+#         search_date_end = request.GET.get('search_date_end')
+        
+#         if search_date_start and search_date_end:
+#             start_date = datetime.strptime(search_date_start, '%Y-%m-%d')
+#             end_date = datetime.strptime(search_date_end, '%Y-%m-%d')
+            
+#             query = f"SELECT * FROM {table_name} WHERE date_ajout BETWEEN '{start_date.date()}' AND '{end_date.date()}' ORDER BY {order_symbol}{sort_column}"
+        
+#         cursor.execute(query)
+
+#         columns = [col[0] for col in cursor.description]
+#         data = cursor.fetchall()
+
+#         paginator = Paginator(data, 7)  # Change 10 to the number of items per page you want
+#         page_number = request.GET.get('page')
+#         page_data = paginator.get_page(page_number)
+
+#     return render(request, 'display_table.html', {
+#         'table_name': table_name,
+#         'columns': columns,
+#         'data': page_data,
+#     })
+
 def display_table(request, table_name):
     with connection.cursor() as cursor:
         sort_column = request.GET.get('sort', 'date_ajout')
         sort_order = request.GET.get('order', 'desc')
-
         order_symbol = '-' if sort_order == 'desc' else ''
 
-        query = f"SELECT * FROM {table_name} ORDER BY {order_symbol}{sort_column}"
+        search_date_range = request.GET.get('date_range')
         
-        search_date_start = request.GET.get('search_date_start')
-        search_date_end = request.GET.get('search_date_end')
-        
-        if search_date_start and search_date_end:
-            start_date = datetime.strptime(search_date_start, '%Y-%m-%d')
-            end_date = datetime.strptime(search_date_end, '%Y-%m-%d')
-            
+        if search_date_range:
+            start_date_str, end_date_str = search_date_range.split(' au ')
+            start_date = datetime.strptime(start_date_str, '%Y-%m-%d')
+            end_date = datetime.strptime(end_date_str, '%Y-%m-%d')
             query = f"SELECT * FROM {table_name} WHERE date_ajout BETWEEN '{start_date.date()}' AND '{end_date.date()}' ORDER BY {order_symbol}{sort_column}"
-        
+        else:
+            query = f"SELECT * FROM {table_name} ORDER BY {order_symbol}{sort_column}"
+
         cursor.execute(query)
 
         columns = [col[0] for col in cursor.description]
         data = cursor.fetchall()
 
-        paginator = Paginator(data, 7)  # Change 10 to the number of items per page you want
+        paginator = Paginator(data, 7)  # Change 7 to the number of items per page you want
         page_number = request.GET.get('page')
         page_data = paginator.get_page(page_number)
 

@@ -36,35 +36,37 @@
     <!-- Custom Css Files -->
     <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}" />
     <link rel="stylesheet" href="{% static 'css/display_table.css' %}" />
+    
+
+    <!-- Calendar Library -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/fr.js"></script>
   </head>
   <body >
     {% include 'nav.html' %}
-    <div class="container pt-5 mt-5 mb-5" id="large-header" class="large-header" >
+    <div class="container pt-2 mt-5 mb-5" id="large-header" class="large-header" >
      <!-- <h1 class="mt-5">Le contenu de la table: {{ table_name }}</h1>-->
       <canvas id="demo-canvas"></canvas>
       <!-- ... (autres parties du code) ... -->
 
-      <div class="mt-4 mb-4">
-        <form method="GET" class="d-flex flex-column align-item-center">
-         <!-- <label for="search_date" class="text-primary fw-bold mb-1"
-            >Filtrer par la Date:</label
-          >-->
-          <div class="align-items-center justify-content-around d-flex gap-2">
-            <span class="text-date">De</span>
-            <input
-              type="date"
-              id="search_date_start"
-              name="search_date_start"
-            />
-            <span class="text-date">Jusqu'à</span>
-            <input type="date" id="search_date_end" name="search_date_end" />
-            <button type="submit" class="btn btn-primary">Filtrer</button>
-          </div>
+      <div class="mt-4 mb-4 d-flex">
+        <!-- Date Range Filter Form -->
+        <form method="GET" class="d-flex justify-content-between" id="filter-form">
+            <div class="d-flex">
+                <div class="d-flex align-items-center">
+                    <input type="text" id="date_range" name="date_range" placeholder="2023-01-01 jusqu'à 2023-12-01" class="form-control" />
+                </div>
+                <div class="mx-2">
+                    <button type="submit" class="btn btn-primary">Filtrer</button>
+                </div>
+            </div>
         </form>
-      </div>
+    </div>
 
       <!-- ... (autres parties du code) ... -->
-      <div class="table-responsive">
+      <div class="table-responsive mt-4">
         <table class="table table-bordered table-striped">
           <tr>
             {% for col in columns %}
@@ -124,6 +126,29 @@
         </nav>
       </div>
     </div>
+
+    <script>
+      var frenchLocale = {
+          weekdays: {
+              shorthand: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'],
+              longhand: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
+          },
+          months: {
+              shorthand: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'],
+              longhand: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
+          },
+          rangeSeparator: ' jusqu\'à ',
+      };
+  
+      flatpickr("#date_range", {
+          mode: "range", // Utiliser le mode de sélection d'une plage de dates
+          dateFormat: "Y-m-d", // Format pour afficher les dates
+          theme: "dark", // Choisir le thème "dark"
+          locale: "fr", // Utiliser la locale française
+          ...frenchLocale, // Merge the frenchLocale object into the options
+      });
+  </script>
+
    
     <!-- Login animation library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
