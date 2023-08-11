@@ -1,0 +1,31 @@
+/* -------------------------- 
+--------  Login Animation
+-----------------------------*/
+#large-header {
+  height: auto !important;
+    background: white;
+}
+.large-header {
+  position: relative;
+  width: 100%;
+  background: #333;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center center;
+  z-index: 1;
+}
+#demo-canvas {
+  background: #fbfdff;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -999;
+}
+.form-control:focus {
+  background-color: var(--bs-body-bg);
+  border-color: none !important;
+  outline: 0;
+  box-shadow: 0 0 0.5px #1d5d9b;
+}

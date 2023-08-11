@@ -1,0 +1,177 @@
+@import url("https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;600;700&display=swap");
+/* Style général */
+* {
+ 
+}
+body {
+  font-family: "League Spartan", sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #e1e1e1;
+}
+
+.btn-primary,
+button[type="submit"] {
+  background-color: #1d5d9b !important;
+  border: none !important;
+}
+
+.btn-primary:hover,
+button[type="submit"] {
+  background-color: #1d5c9bbb !important;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Style pour l'en-tête */
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Style pour la formulaire */
+form {
+  text-align: center;
+  margin: 20px auto;
+  margin-top: 20px;
+  max-width: 400px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 5px;
+  flex-wrap: wrap;
+  margin-top: -1px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+input[type="text"] {
+  width: 60%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+}
+@media (max-width: 992) {
+  input[type="text"] {
+    width: 98%;
+  }
+}
+
+button[type="submit"] {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+ul.topnav li a:not(:last-of-type):hover {
+  border-bottom: 1px solid #1d5d9b;
+}
+
+ul.topnav li a.active {
+  border-bottom: 1px solid #1d5d9b;
+}
+
+button[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+a.success {
+  display: block;
+  text-decoration: none;
+  margin: 15px auto;
+  background-color: #3760d8;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 15%;
+  text-align: center;
+}
+
+a.success:hover {
+  background-color: #271e8b;
+}
+
+/* Style pour l'iframe */
+iframe {
+  display: block;
+  margin: 0 auto; /* Centrer horizontalement */
+  width: 90%;
+  height: 500px;
+  border: none;
+}
+
+.img-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 66vh; /* Ajustez la hauteur en fonction de vos besoins */
+}
+
+.img-container img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.element {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 94.2vh;
+}
+.element-container {
+  background: white;
+  padding: 45px 125px;
+  border-radius: 3px;
+  /* border: 4px solid #000000ad; */
+  box-shadow: 0 0 45px black;
+  margin-bottom: 30px;
+  padding-bottom: 10px;
+}
+@media (max-width: 992px) {
+  .element-container {
+    background: white;
+    padding: 45px 5px;
+  }
+}
+
+.element-container {
+  position: relative;
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+}
+#loadingAnimation {
+  position: absolute;
+  border-radius: 10px;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+}
+
+#loadingAnimation img {
+  width: 200px;
+}
+.hidden {
+  display: none !important;
+}

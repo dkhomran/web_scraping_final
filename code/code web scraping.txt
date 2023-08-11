@@ -1,0 +1,35 @@
+import requests
+from bs4 import BeautifulSoup
+
+
+l_titre = []
+l_lien = []
+l_images = []
+date_ajou = []
+
+result = requests.get("https://veille-transitionenergetique.fr/")
+
+src = result.content
+
+soup = BeautifulSoup(src,"lxml")
+
+titre = soup.find_all("h3", {"class":"slide-entry-title entry-title"})
+lien = soup.find_all("h3", {"class":"slide-entry-title entry-title"})
+image = soup.find_all("img", {"class":"attachment-portfolio size-portfolio wp-post-image"})
+
+for i in range(len(titre)):
+    l_titre.append(titre[i].text)
+    l_lien.append(lien[i].find("a").attrs['href'])
+for ph in image:
+    link_image = ph["src"]
+    l_images.append(link_image)
+
+for link in l_lien:
+    result = requests.get(link)
+    src = result.content
+    soup = BeautifulSoup(src, "lxml")
+    date = soup.find("time", {"class":"date-container minor-meta updated"})
+    if date is not None:
+        date_ajou.append(date.text)
+
+

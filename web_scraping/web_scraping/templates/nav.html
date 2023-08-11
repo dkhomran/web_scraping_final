@@ -1,0 +1,79 @@
+<!-- <a href="http://127.0.0.1:8000/">TunisSolutions</a> -->
+<!-- <head>
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0"
+  />
+  <title>Agence immobilière</title>
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}" />
+</head> -->
+<!-- <body> -->
+<header>
+  <nav>
+    <div class="container">
+      <div class="logo">
+        <h3 class="p-3 mb-0">
+          TAC-TIC
+        </h3>
+      </div>
+      <ul class="topnav">
+
+        {% if request.user.is_staff %}
+        <!-- Afficher le lien vers la page d'administration -->
+        <li><a href="/admin/">Administration</a></li>
+        {% endif %}
+
+        {% if request.user.is_authenticated %}
+        <li><a href="http://127.0.0.1:8000/">Acceuil</a></li>
+        <li>
+          <a href="{% url 'list_and_display_tables' %}" type="button"
+            >Scraping</a
+          >
+        </li>
+
+        <li>
+          <a href="{% url 'logout_user' %}" type="button">Se deconnecter</a>
+        </li>
+        <li>
+          <a href="/profile" class="user-icon text-primary d-flex align-items-center gap-1">
+            <span>{{ request.user.username }}</span>
+            <span class="material-symbols-outlined fs-6">person</span>
+          </a>
+        </li>
+        {% endif %}
+      </ul>
+
+      <div class="phone-nav-bar">
+        <span id="toggle-icon" class="material-symbols-outlined"> menu </span>
+        <ul class="topnav-phone">
+
+          {% if request.user.is_staff %}
+          <!-- Afficher le lien vers la page d'administration -->
+          <li><a href="/admin/">Administration</a></li>
+          {% endif %}
+
+          {% if request.user.is_authenticated %}
+          <li>
+            <a href="/profile" class="user-icon text-primary d-flex align-items-center gap-1">
+              <span>{{ request.user.username }}</span>
+              <span class="material-symbols-outlined fs-6">person</span>
+            </a>
+          </li>
+          <li><a href="http://127.0.0.1:8000/">Acceuil</a></li>
+          <li>
+            <a href="{% url 'list_and_display_tables' %}" type="button"
+              >Scraping</a
+            >
+          </li>
+
+          <li>
+            <a href="{% url 'logout_user' %}" type="button">Se deconnecter</a>
+          </li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+<!-- </body> -->

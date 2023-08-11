@@ -1,0 +1,126 @@
+@import url("https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;600;700&display=swap");
+
+ *{
+  font-family: "League Spartan", sans-serif;
+ }
+
+/* __________  nav _______________ */
+
+header {
+  width: auto;
+  height: auto;
+  padding: 15px 40px;
+  background: rgb(255, 255, 255) !important;
+  color: black;
+  overflow: hidden;
+}
+
+a {
+  text-decoration: none;
+  color: rgb(11, 11, 11);
+  display: block;
+  width: max-content;
+}
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+nav .container {
+  display: flex;
+  justify-content: space-between;
+  padding: 0;
+}
+.logo h3 {
+  font-weight: bold;
+}
+.logo:hover {
+  text-shadow: 0 0 2px #1d5d9b;
+  cursor: none;
+}
+
+ul.topnav {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #ffffff;
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.topnav {
+  display: flex;
+  align-items: center;
+}
+
+ul.topnav li a {
+  text-align: center;
+  padding: 14px 10px;
+}
+
+ul.topnav li a:hover {
+  color: #1d5d9b;
+}
+
+ul.topnav li .user-icon:hover:not(.active) {
+  background-color: white;
+}
+
+/* ----- phone navbar ------ */
+.phone-nav-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  display: none;
+}
+
+@media (max-width: 992px) {
+  .phone-nav-bar {
+    display: block;
+    display: flex;
+    align-items: center;
+  }
+  .topnav {
+    display: none;
+  }
+}
+
+.phone-nav-bar .material-symbols-outlined {
+  cursor: pointer;
+  margin-right: 12px;
+}
+.topnav-phone {
+  position: absolute;
+  z-index: 9999;
+  background-color: #ffffff;
+  box-shadow: 0 0 4px -1px black;
+  right: 5px;
+  top: 64px;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  transform: scale(0);
+  transform-origin: top right;
+  transition: 0.3s ease;
+  -webkit-transition: 0.3s ease;
+  -moz-transition: 0.3s ease;
+  -ms-transition: 0.3s ease;
+  -o-transition: 0.3s ease;
+}
+.topnav-phone.active {
+  transform: scale(1);
+  -webkit-transform: scale(1);
+  -moz-transform: scale(1);
+  -ms-transform: scale(1);
+  -o-transform: scale(1);
+}
+.topnav-phone li a {
+  padding: 8px 30px;
+}
+.topnav-phone li a:hover {
+  color: #1d5d9b;
+}
