@@ -12,6 +12,9 @@ body {
   background-color: #1d5c9bc5;
 }
  
+.hoverable {
+  cursor:none;
+}
 
 
 .login-container {

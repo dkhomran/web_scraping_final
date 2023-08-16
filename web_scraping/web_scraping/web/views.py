@@ -10,13 +10,22 @@ from django.core.paginator import Paginator
 from datetime import datetime
 from django.http import JsonResponse
 from django.contrib.auth import update_session_auth_hash
+from django.views.generic.base import View
+import requests
+from bs4 import BeautifulSoup
+import mysql.connector
 
-
-
-@login_required(login_url='login_user')  # Redirige vers la page 'login_user' si non connecté
+@login_required(login_url='login_user')
 def index(request):
-    url = request.POST.get('url')
-    return render(request, 'index.html', {'url': url})
+    url = None
+    scraped_data = None
+
+    if request.method == 'POST':
+        url = request.POST.get('url')
+        ScrapingView().scrape_website_and_insert_data()
+        scraped_data = ScrapingView().get_scraped_data()
+
+    return render(request, 'index.html', {'url': url, 'scraped_data': scraped_data})
 
 
 
@@ -98,6 +107,49 @@ def display_table(request, table_name):
     })
 
 
+# def display_table(request, table_name):
+#     with connection.cursor() as cursor:
+#         sort_column = request.GET.get('sort', 'date_ajout')
+#         sort_order = request.GET.get('order', 'desc')
+
+#         order_symbol = '-' if sort_order == 'desc' else ''
+
+#         query = f"SELECT * FROM {table_name} ORDER BY {order_symbol}{sort_column}"
+        
+#         search_date_start = request.GET.get('search_date_start')
+#         search_date_end = request.GET.get('search_date_end')
+        
+#         if search_date_start and search_date_end:
+#             start_date = datetime.strptime(search_date_start, '%Y-%m-%d')
+#             end_date = datetime.strptime(search_date_end, '%Y-%m-%d')
+            
+#             query = f"SELECT * FROM {table_name} WHERE date_ajout BETWEEN '{start_date.date()}' AND '{end_date.date()}' ORDER BY {order_symbol}{sort_column}"
+        
+#         cursor.execute(query)
+
+#         columns = [col[0] for col in cursor.description]
+#         data = cursor.fetchall()
+
+#         paginator = Paginator(data, 7)  # Change 10 to the number of items per page you want
+#         page_number = request.GET.get('page')
+#         page_data = paginator.get_page(page_number)
+
+#     return render(request, 'display_table.html', {
+#         'table_name': table_name,
+#         'columns': columns,
+#         'data': page_data,
+#     })
+
+
+def display_historique(request, table_name):
+    with connection.cursor() as cursor:
+        cursor.execute(f"SELECT * FROM date_up ORDER BY timestamp DESC")
+        table_content = cursor.fetchall()
+
+    return render(request, 'display_historique.html', {'table_content': table_content, 'table_name': table_name})
+
+
+
 def login_user(request):
     if request.user.is_authenticated:
         if request.user.is_staff:
@@ -167,3 +219,110 @@ def profile(request):
     return render(request, 'profile.html', {'user': user})
 
 
+
+
+class ScrapingView(View):
+
+    french_month_mapping = {
+        "janvier": 1,
+        "février": 2,
+        "mars": 3,
+        "avril": 4,
+        "mai": 5,
+        "juin": 6,
+        "juillet": 7,
+        "août": 8,
+        "septembre": 9,
+        "octobre": 10,
+        "novembre": 11,
+        "décembre": 12
+    }
+
+    def connect_to_mysql(self):
+        return mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="",
+            database="test_scrap"
+        )
+
+    def create_date_up_table(self, connection):
+        cursor = connection.cursor()
+        create_table_query = """
+            CREATE TABLE IF NOT EXISTS date_up (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                timestamp DATETIME
+            )
+        """
+        cursor.execute(create_table_query)
+        cursor.close()
+
+    def insert_timestamp(self, connection):
+        cursor = connection.cursor()
+        timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        query = "INSERT INTO date_up (timestamp) VALUES (%s)"
+        data = (timestamp,)
+        cursor.execute(query, data)
+        connection.commit()
+        cursor.close()
+
+    def scrape_website_and_insert_data(self):
+        result = requests.get("https://www.encyclopedie-energie.org/recherche/?mot-cle=solar")
+        src = result.content
+        soup = BeautifulSoup(src, "lxml")
+
+        titles = soup.find_all("div", {"class": "title"})
+        link = soup.find_all("div", {"class": "image"})
+        date = soup.find_all("span", {"class": "date_article"})
+
+        l_title = []
+        l_lien = []
+        l_images = []
+        date_ajou = []
+
+        for i in range(len(titles)):
+            l_title.append(titles[i].text)
+            date_ajou.append(date[i].text)
+            l_images.append(link[i].find("img").attrs['src'])
+            l_lien.append(link[i].find("a").attrs['href'])
+
+        connection = self.connect_to_mysql()
+        self.create_date_up_table(connection)
+        self.insert_timestamp(connection)
+
+        cursor = connection.cursor()
+        for i in range(len(l_title)):
+            day, month_name, year = date_ajou[i].split(' ')
+            month = self.french_month_mapping.get(month_name.lower(), 1)
+            formatted_date = f'{year}-{month:02d}-{int(day):02d}'
+            query = "INSERT INTO solar_data (title, link, image, date_ajout) VALUES (%s, %s, %s, %s)"
+            data = (l_title[i], l_lien[i], l_images[i], formatted_date)
+            cursor.execute(query, data)
+        connection.commit()
+        cursor.close()
+        connection.close()
+
+    def get_scraped_data(self):
+        connection = self.connect_to_mysql()
+        cursor = connection.cursor()
+        query = "SELECT title, link, image, date_ajout FROM solar_data"
+        cursor.execute(query)
+        scraped_data = []
+        for row in cursor.fetchall():
+            title, link, image, date_ajout = row
+            scraped_data.append({
+                'title': title,
+                'link': link,
+                'image': image,
+                'date_ajout': date_ajout,
+            })
+        cursor.close()
+        connection.close()
+        return scraped_data
+
+    def get(self, request, *args, **kwargs):
+        return render(request, 'index.html', {'scraping_done': False, 'scraping_logs': []})
+
+    def post(self, request, *args, **kwargs):
+        self.scrape_website_and_insert_data()
+        return render(request, 'index.html', {'scraping_done': True, 'scraping_logs': []})

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Scraping Page</title>
+</head>
+<body>
+    <h1>Data Scraping</h1>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Start Scraping</button>
+    </form>
+    
+    {% if scraping_done %}
+    <p>Data scraping has been completed and saved to the database.</p>
+    {% endif %}
+    
+    <h2>Scraping Log</h2>
+    <ul>
+        {% for log in scraping_logs %}
+        <li>{{ log }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

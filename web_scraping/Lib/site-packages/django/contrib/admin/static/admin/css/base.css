@@ -88,6 +88,46 @@ select ::selection {
   color: #fff; /* Change text color for better contrast */
 }
 
+.confim-password-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: #EEE;
+  padding: 100px;
+  border-radius: 10px;
+}
+.confim-password-form input {
+  width: 100%;
+}
+
+.reset-form-email {
+  padding: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  background-color: #EEE;
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+}
+
+.reset-password-done {
+  display: flex;
+  flex-direction: column;
+  max-width: 700px;
+  padding: 15px;
+  margin: auto;
+  background-color: #EEE;
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+}
+
+
 /* LINKS */
 
 
@@ -765,7 +805,7 @@ ul.errorlist {
   margin: 0 0 4px;
   padding: 0;
   color: var(--error-fg);
-  background: var(--body-bg);
+  /* background: var(--body-bg); */
 }
 
 ul.errorlist li {

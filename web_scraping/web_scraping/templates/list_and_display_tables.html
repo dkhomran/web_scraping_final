@@ -41,6 +41,7 @@
         border-radius: 10px;
         box-shadow: 0 0 5px #0000000d;
         padding: 48px;
+        max-width: 770px;
       }
     </style>
 
@@ -50,17 +51,18 @@
       <canvas id="demo-canvas"></canvas>
       <!--data-aos="zoom-out"-->
       <div> 
-      <h1 class="mb-3">Liste des sites</h1>
+      <h1 class="mb-3 text-center">Liste des sites</h1>
       <ul class="list-group" >
         {% for table_name, create_time in table_info %}
         <li
-          class="list-group-item d-flex justify-content-between align-items-center flex-wrap"
+          class="list-group-item d-flex justify-content-around align-items-center flex-wrap"
         >
           <span> {{ table_name }}</span>
-          <span>{{ create_time }}</span>
-          <a href="{% url 'display_table' table_name %}" class="btn btn-primary"
+          <!-- <span>{{ create_time }}</span> -->
+          <a href="{% url 'display_table' table_name %}" class="text-primary"
             >Afficher le contenu</a
           >
+          <a href="{% url 'display_historique' table_name %}" class="text-danger">Afficher l'historique</a>
         </li>
         {% endfor %}
       </ul>
