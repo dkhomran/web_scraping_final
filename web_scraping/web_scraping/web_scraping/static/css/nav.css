@@ -35,10 +35,7 @@ nav .container {
   font-weight: bold;
   font-size: 26px;
 }
-.logo:hover {
-  text-shadow: 0 0 2px #1d5d9b;
-  cursor: none;
-}
+ 
 
 ul.topnav {
   margin: 0;
@@ -59,9 +56,9 @@ ul.topnav li a {
   padding: 14px 10px;
 }
 
-ul.topnav li a:hover {
+/* ul.topnav li a:hover {
   color: #1d5d9b;
-}
+} */
 
 ul.topnav li .user-icon:hover:not(.active) {
   background-color: white;
@@ -122,6 +119,6 @@ ul.topnav li .user-icon:hover:not(.active) {
 .topnav-phone li a {
   padding: 8px 30px;
 }
-.topnav-phone li a:hover {
+/* .topnav-phone li a:hover {
   color: #1d5d9b;
-}
+} */

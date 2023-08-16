@@ -51,19 +51,16 @@
       <canvas id="demo-canvas"></canvas>
       <!-- ... (autres parties du code) ... -->
 
-      <div class="mt-4 mb-4 d-flex">
-        <!-- Date Range Filter Form -->
-        <form method="GET" class="d-flex justify-content-between" id="filter-form">
-            <div class="d-flex">
-                <div class="d-flex align-items-center">
-                    <input type="text" id="date_range" name="date_range" placeholder="2023-01-01 jusqu'à 2023-12-01" class="form-control" />
-                </div>
-                <div class="mx-2">
-                    <button type="submit" class="btn btn-primary">Filtrer</button>
-                </div>
+
+      <!-- Date Range Filter Form -->
+      <div class="mt-4 mb-4 d-flex justify-content-center">
+        <form method="GET" class="row" id="filter-form">
+            <div class="col-md-12 d-flex align-items-center">
+                <input type="text" id="date_range" name="date_range" placeholder="aaaa-mm-jj au aaaa-mm-jj" class="form-control" />
+                <button type="submit" class="btn btn-primary ms-2">Filtrer</button>
             </div>
         </form>
-    </div>
+      </div>
 
       <!-- ... (autres parties du code) ... -->
       <div class="table-responsive mt-4">

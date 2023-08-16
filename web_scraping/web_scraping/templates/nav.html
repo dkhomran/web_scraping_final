@@ -10,10 +10,11 @@
 </head> -->
 <!-- <body> -->
 <header>
+  
   <nav>
     <div class="container">
       <div class="logo">
-        <h3 class="p-3 mb-0">
+        <h3 class="p-3 mb-0 hoverable">
           TAC-TIC
         </h3>
       </div>
@@ -25,15 +26,15 @@
         {% endif %}
 
         {% if request.user.is_authenticated %}
-        <li><a href="http://127.0.0.1:8000/">Acceuil</a></li>
+        <li><a  class="hoverable" href="http://127.0.0.1:8000/">Acceuil</a></li>
         <li>
-          <a href="{% url 'list_and_display_tables' %}" type="button"
+          <a  class="hoverable" href="{% url 'list_and_display_tables' %}" type="button"
             >Scraping</a
           >
         </li>
 
         <li>
-          <a href="{% url 'logout_user' %}" type="button">Se deconnecter</a>
+          <a  class="hoverable" href="{% url 'logout_user' %}" type="button">Se deconnecter</a>
         </li>
         <li>
           <a href="/profile" class="user-icon text-primary d-flex align-items-center gap-1">

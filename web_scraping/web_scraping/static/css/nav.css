@@ -35,10 +35,7 @@ nav .container {
   font-weight: bold;
   font-size: 26px;
 }
-.logo:hover {
-  text-shadow: 0 0 2px #1d5d9b;
-  cursor: none;
-}
+ 
 
 ul.topnav {
   margin: 0;

@@ -28,8 +28,13 @@
     href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
   />
  
+  <!-- CURSOR ANIMATION -->
+  <!-- <link rel="stylesheet" type="text/css" href="{% static 'css/cursor_animation.css' %}" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script> -->
+
   </head>
   <body>
+    
     {% include "nav.html" %}
     <div
       class="element"
@@ -42,11 +47,15 @@
     >
    
       <div class="element-container"  data-aos="zoom-out">
+
+
+       
+
         <div id="loadingAnimation" class="hidden">
           <img src="{% static 'img/loading.gif' %}" alt="">
         </div>
         <h1
-          class="grand-titre"
+          class="grand-titre hoverable"
           style="font-family: 'Anton', sans-serif"
         >
           Entrez l'URL à surveiller
@@ -62,12 +71,18 @@
       {% endif %}
     </div>
 
-     
+  
+    
     <script src="{% static 'js/index.js' %}"></script>
     <script src="{% static 'js/nav-toggle.js' %}"></script>
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script>
       AOS.init();      
     </script>
+
+
+    <!-- cursor_animation -->
+    <!-- <script src="{% static 'js/cursor_animation.js' %}"></script> -->
+
   </body>
 </html>
