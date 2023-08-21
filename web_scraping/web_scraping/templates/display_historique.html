@@ -36,7 +36,8 @@
     <!-- Custom Css Files -->
     <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}" />
     <link rel="stylesheet" href="{% static 'css/display_table.css' %}" />
-    
+
+    <link rel="stylesheet" href="{% static 'css/back_btn.css' %}" />
 
     <!-- Calendar Library -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
@@ -58,8 +59,12 @@
   <body >
     {% include 'nav.html' %}
     
-    <div class="container pt-2 mt-5 mb-5" id="large-header" class="large-header" >
-        
+    <div class="container pt-2 mb-5" id="large-header" class="large-header" >
+      <div class="back-button">
+        <a href="" class="backBtn" id="retourBtn"> 
+           <img src="{% static 'img/back.png' %}" width="50" alt="">
+        </a>
+      </div>
      <!-- <h1 class="mt-5">Le contenu de la table: {{ table_name }}</h1>-->
       <canvas id="demo-canvas"></canvas>
       <!-- ... (autres parties du code) ... -->
@@ -119,5 +124,9 @@
     <!-- Login custom animation -->
     <script src="{% static 'js/animation.js' %}"></script>
     <script src="{% static 'js/nav-toggle.js' %}"></script>
+
+    <!-- back btn  -->
+    <script src="{% static 'js/back_button.js' %}"></script>
+
   </body>
 </html>

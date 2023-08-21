@@ -8,24 +8,39 @@
 
 header {
   width: auto;
-  height: auto;
-
-  background: rgb(255, 255, 255) !important;
+  height: auto;position: absolute;
+  top:0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  background: rgb(255, 255, 255);
   color: black;
   overflow: hidden;
 }
 
 a {
   text-decoration: none;
-  color: rgb(11, 11, 11);
-  display: block;
   width: max-content;
 }
+
+header a {
+  width: max-content;
+  color: rgb(11, 11, 11) !important;
+  display: block;
+  font-size: 18px;
+}
+header a:hover, 
+header a:focus {
+  text-decoration: none;
+  color:#1d5d9b !important;
+}
 ul {
-  list-style-type: none;
+  list-style-type: none !important;
   padding: 0;
 }
-
+ul li {
+  list-style: none;
+}
 nav .container {
   display: flex;
   justify-content: space-between;
@@ -43,7 +58,6 @@ ul.topnav {
   overflow: hidden;
   background-color: #ffffff;
   font-weight: 600;
-  font-size: 17px;
 }
 
 .topnav {
@@ -69,10 +83,10 @@ ul.topnav li .user-icon:hover:not(.active) {
   position: relative;
   display: flex;
   align-items: center;
-  display: none;
+ 
 }
 
-@media (max-width: 992px) {
+/* @media (max-width: 992px) {
   .phone-nav-bar {
     display: block;
     display: flex;
@@ -81,19 +95,19 @@ ul.topnav li .user-icon:hover:not(.active) {
   .topnav {
     display: none;
   }
-}
+} */
 
 .phone-nav-bar .material-symbols-outlined {
   cursor: pointer;
   margin-right: 12px;
 }
 .topnav-phone {
-  position: absolute;
+  position: fixed;
   z-index: 9999;
   background-color: #ffffff;
   box-shadow: 0 0 4px -1px black;
-  right: 5px;
-  top: 64px;
+  right: 16%;
+  top: 70px;
   border-radius: 5px;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
@@ -122,3 +136,32 @@ ul.topnav li .user-icon:hover:not(.active) {
 /* .topnav-phone li a:hover {
   color: #1d5d9b;
 } */
+
+/* no drop links */
+
+.no-drop-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0;
+}
+
+.no-drop-links li a {
+  padding: 17px 17px 13px 0;
+  display: block;
+ 
+}
+
+@media (min-width:769px) {
+  .phone-link {
+    display: none;
+  }
+}
+@media (max-width:769px) {
+  .pc-links {
+    display: none;
+  }
+  .topnav-phone {
+    right: 10px;
+  }
+}

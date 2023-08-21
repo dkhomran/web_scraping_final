@@ -4,6 +4,7 @@
 #large-header {
   height: auto !important;
     background: white;
+    margin-top: 100px;
 }
 .large-header {
   position: relative;

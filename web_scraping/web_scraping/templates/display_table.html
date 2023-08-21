@@ -39,20 +39,27 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}" />
     <link rel="stylesheet" href="{% static 'css/display_table.css' %}" />
     
+    <!-- back btn Css Files -->
+    <link rel="stylesheet" href="{% static 'css/back_btn.css' %}" />
+
 
     <!-- Calendar Library -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/fr.js"></script>
+
   </head>
   <body >
     {% include 'nav.html' %}
-    <div class="container pt-2 mt-5 mb-5" id="large-header" class="large-header" >
+    <div class="container pt-2 mb-5" id="large-header" class="large-header" >
      <!-- <h1 class="mt-5">Le contenu de la table: {{ table_name }}</h1>-->
       <canvas id="demo-canvas"></canvas>
       <!-- ... (autres parties du code) ... -->
-
+      <div class="back-button">
+        <a href="" class="backBtn" id="retourBtn"> 
+           <img src="{% static 'img/back.png' %}" width="50" alt="">
+        </a>
+      </div>
 
       <!-- Date Range Filter Form -->
       <div class="mt-4 mb-4 d-flex justify-content-center">
@@ -180,14 +187,20 @@
           locale: "fr", // Utiliser la locale française
           ...frenchLocale, // Merge the frenchLocale object into the options
       });
+
+      document.getElementById("retourBtn").addEventListener("click", function() {
+          window.history.back(); // Cette ligne renvoie à la page précédente dans l'historique du navigateur
+      });
   </script>
 
-   
+
     <!-- Login animation library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenLite.min.js"></script>
     <!-- Login custom animation -->
     <script src="{% static 'js/animation.js' %}"></script>
     <script src="{% static 'js/nav-toggle.js' %}"></script>
+    <!-- back button -->
+    <script src="{% static 'js/back_button.js' %}"></script>
   </body>
 </html>

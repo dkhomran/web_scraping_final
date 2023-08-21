@@ -57,6 +57,15 @@
                 class="img-fluid" alt="Sample image">
             </div> -->
             <div class="col-md-8 col-lg-12 col-xl-12 offset-xl-1">
+              <div>
+                {% if messages %}
+                <div>
+                  {% for message in messages %}
+                  <p class="text-danger pb-0">{{ message }}</p>
+                  {% endfor %}
+                </div>
+                {% endif %}
+            </div>
               <form action="{% url "login_user" %}" method="POST" >
                 {% csrf_token %}
       
@@ -80,7 +89,7 @@
                   <button type="submit" class="btn btn-primary"
                     style="padding-left: 2.5rem; padding-right: 2.5rem; cursor:none">Se Connecter
                   </button>
-                  <a class="d-block hoverable" href="{% url "password_reset" %}">Mot de passe oublié?</a>
+                  <a class="d-block hoverable pb-0 text-dark" href="{% url "password_reset" %}">Mot de passe oublié?</a>
                 </div>
       
               </form>

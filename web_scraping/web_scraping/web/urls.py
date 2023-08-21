@@ -11,6 +11,7 @@ urlpatterns = [
     path('',views.login_user,name="login_user"),
     path('logout_user',views.logout_user,name="logout_user"),
     path('profile', views.profile, name="profile"),
+    path('profile_password', views.profile_password, name="profile_password"),
     path('scrape/', ScrapingView.as_view(), name='scrape'),
  
     path('historique/<str:table_name>/', views.display_historique, name='display_historique'),

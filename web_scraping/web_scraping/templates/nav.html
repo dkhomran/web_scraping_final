@@ -18,10 +18,9 @@
           TAC-TIC
         </h3>
       </div>
-      <ul class="topnav">
-
+      <!-- <ul class="topnav">
         {% if request.user.is_staff %}
-        <!-- Afficher le lien vers la page d'administration -->
+    
         <li><a href="/admin/">Administration</a></li>
         {% endif %}
 
@@ -43,36 +42,58 @@
           </a>
         </li>
         {% endif %}
-      </ul>
-
-      <div class="phone-nav-bar">
-        <span id="toggle-icon" class="material-symbols-outlined"> menu </span>
-        <ul class="topnav-phone">
-
-          {% if request.user.is_staff %}
-          <!-- Afficher le lien vers la page d'administration -->
-          <li><a href="/admin/">Administration</a></li>
-          {% endif %}
-
+      </ul> -->
+      <div class="topnav">
+        <ul class="no-drop-links">
           {% if request.user.is_authenticated %}
-          <li>
-            <a href="/profile" class="user-icon text-primary d-flex align-items-center gap-1">
-              <span>{{ request.user.username }}</span>
-              <span class="material-symbols-outlined fs-6">person</span>
-            </a>
-          </li>
-          <li><a href="http://127.0.0.1:8000/">Acceuil</a></li>
-          <li>
-            <a href="{% url 'list_and_display_tables' %}" type="button"
-              >Scraping</a
-            >
-          </li>
-
-          <li>
-            <a href="{% url 'logout_user' %}" type="button">Se deconnecter</a>
-          </li>
+            <li class="pc-links">
+              <a href="http://127.0.0.1:8000/index">Acceuil</a>
+            </li>
+            <li class="pc-links">
+              <a href="{% url 'list_and_display_tables' %}" >Scraping</a>     
+            </li>
           {% endif %}
         </ul>
+        <div class="phone-nav-bar">
+          <span id="toggle-icon" class="material-symbols-outlined"> menu </span>
+          <ul class="topnav-phone">
+    
+            {% if request.user.is_authenticated %}
+            <li class="border-bottom">
+              {% if request.user.is_staff %}
+              <a href="/admin/" class="user-icon text-primary d-flex justify-content-start align-items-center gap-1">
+                <img src="{% static 'img/profile_logo_admin.png' %}" width="30" alt="">
+                <span class="pt-2 px-2 h4 text-dark">{{ request.user.username }}</span>
+              </a>
+              {% else %}
+              <a href="#" class="user-icon text-primary d-flex justify-content-start align-items-center gap-1">
+                <img src="{% static 'img/profile_logo_.png' %}" width="30" alt="">
+                <span class="pt-2 px-2 h4 text-dark">{{ request.user.username }}</span>
+              </a>
+              {% endif %}
+            </li>
+            <li class="phone-link"><a href="http://127.0.0.1:8000/index">Acceuil</a></li>
+            <li class="phone-link">
+              <a href="{% url 'list_and_display_tables' %}" type="button"
+                >Scraping</a
+              >
+            </li>
+            <!-- {% if request.user.is_staff %}
+          
+            <li><a href="/admin/">Administration</a></li>
+            {% endif %} -->
+            <li>
+              <a href="/profile" type="button">Parametre</a>
+            </li>
+            <li>
+              <a href="/profile_password" type="button">Changer le mot de passe</a>
+            </li>
+            <li>
+              <a href="{% url 'logout_user' %}" type="button">Se deconnecter</a>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
       </div>
     </div>
   </nav>

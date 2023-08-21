@@ -130,7 +130,7 @@ iframe {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 94.2vh;
+  height: 100vh !important;
 }
 .element-container {
   background: white;

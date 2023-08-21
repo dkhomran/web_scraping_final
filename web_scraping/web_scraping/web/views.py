@@ -35,10 +35,16 @@ def list_and_display_tables(request):
         cursor.execute("SELECT table_name, create_time FROM information_schema.TABLES WHERE table_schema = %s", [connection.settings_dict['NAME']])
         table_info = cursor.fetchall()
 
-    # Filtrer les informations pour inclure uniquement 'solar_data' et 'scraping_data'
-    filtered_table_info = [(table_name, create_time) for table_name, create_time in table_info if table_name in ['solar_data', 'scraping_data']]
+    # Filtrer les informations pour inclure uniquement 'scrapeddata'
+    filtered_table_info = [(table_name, create_time) for table_name, create_time in table_info if table_name in ['scrapeddata']]
 
-    return render(request, 'list_and_display_tables.html', {'table_info': filtered_table_info})
+    # Récupérer les liens de la table "site"
+    site_data = []
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT url, name FROM site")
+        site_data = cursor.fetchall()
+
+    return render(request, 'list_and_display_tables.html', {'table_info': filtered_table_info, 'site_data': site_data})
 
 
 
@@ -166,11 +172,11 @@ def login_user(request):
         if user is not None:
             auth.login(request, user)
             if user.is_staff:
-                return redirect('admin:index')  # Redirect to admin dashboard
+                return redirect('index')  # Redirect to admin dashboard
             else:
                 return redirect('index')  # Redirect to the index page
         else:
-            messages.info(request, 'Invalid Username or password')
+            messages.info(request, 'Le nom d\'utilisateur ou le mot de pass est incorrecte')
             return redirect('login_user')
     else:
         return render(request, "login.html")
@@ -184,39 +190,61 @@ def logout_user(request):
 
  
 
-
 @login_required
 def profile(request):
     user = request.user
+    with connection.cursor() as cursor:
+        sql_query = "SELECT * FROM auth_user WHERE id = %s;"
+        cursor.execute(sql_query, [user.id])
+        user_data = cursor.fetchone()
 
     if request.method == 'POST':
         username = request.POST.get('username')
+        phone = request.POST.get('phone')
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
         email = request.POST.get('email')
+
+        # Update user's profile information
+        with connection.cursor() as cursor:
+            update_query = """
+            UPDATE auth_user
+            SET first_name = %s, last_name = %s, email = %s, username = %s, phone = %s
+            WHERE id = %s;
+            """
+            cursor.execute(update_query, [first_name, last_name, email, username, phone, user.id])
+
+        messages.success(request, 'Profil mis à jour avec succès')
+
+        # Redirect to the profile page to avoid resubmission on page refresh
+        return redirect('profile')
+
+    return render(request, 'profile.html', {'user_data': user_data})
+
+
+@login_required
+def profile_password(request):
+    user = request.user
+
+    if request.method == 'POST':
         current_password = request.POST.get('current_password')
         new_password = request.POST.get('password')
         confirm_password = request.POST.get('confirm_password')
 
-        # Mise à jour des informations utilisateur
-        user.first_name = first_name
-        user.last_name = last_name
-        user.email = email
-        user.username = username
+        # Vérification du mot de passe actuel
+        if not user.check_password(current_password):
+            messages.error(request, 'Mot de passe actuel incorrect')
+            return redirect('profile_password')
 
-        if new_password != '':
-            # Vérification du mot de passe actuel
-            if not user.check_password(current_password):
-                messages.error(request, 'Incorrect current password')
-                return redirect('profile')
-                if new_password == confirm_password:
-                    user.set_password(new_password)
-                    update_session_auth_hash(request, user) # Mettre à jour la session pour éviter la déconnexion
-    
-        user.save()
-        messages.success(request, 'Profile updated successfully')
+        if new_password == confirm_password:
+            user.set_password(new_password)
+            user.save()
+            update_session_auth_hash(request, user)  # Mettre à jour la session pour éviter la déconnexion
+            messages.success(request, 'Mot de passe modifié avec succès')
+        else:
+            messages.error(request, 'Les nouveaux mots de passe ne correspondent pas')
 
-    return render(request, 'profile.html', {'user': user})
+    return render(request, 'profile_password.html')
 
 
 
@@ -267,40 +295,48 @@ class ScrapingView(View):
         cursor.close()
 
     def scrape_website_and_insert_data(self):
-        result = requests.get("https://www.encyclopedie-energie.org/recherche/?mot-cle=solar")
-        src = result.content
-        soup = BeautifulSoup(src, "lxml")
+          ll = "https://www.encyclopedie-energie.org/recherche/?mot-cle=solar"
+          result = requests.get(ll)
+          src = result.content
+          soup = BeautifulSoup(src, "lxml")
 
-        titles = soup.find_all("div", {"class": "title"})
-        link = soup.find_all("div", {"class": "image"})
-        date = soup.find_all("span", {"class": "date_article"})
+          connection = self.connect_to_mysql()
+          self.create_date_up_table(connection)
+          self.insert_timestamp(connection)
 
-        l_title = []
-        l_lien = []
-        l_images = []
-        date_ajou = []
+          cursor = connection.cursor()
 
-        for i in range(len(titles)):
-            l_title.append(titles[i].text)
-            date_ajou.append(date[i].text)
-            l_images.append(link[i].find("img").attrs['src'])
-            l_lien.append(link[i].find("a").attrs['href'])
+          # Get the site_id based on the link ll
+          site_query = "SELECT id FROM site WHERE url = %s"
+          cursor.execute(site_query, (ll,))
+          site_id = cursor.fetchone()[0]
 
-        connection = self.connect_to_mysql()
-        self.create_date_up_table(connection)
-        self.insert_timestamp(connection)
+          titles = soup.find_all("div", {"class": "title"})
+          link = soup.find_all("div", {"class": "image"})
+          date = soup.find_all("span", {"class": "date_article"})
 
-        cursor = connection.cursor()
-        for i in range(len(l_title)):
-            day, month_name, year = date_ajou[i].split(' ')
-            month = self.french_month_mapping.get(month_name.lower(), 1)
-            formatted_date = f'{year}-{month:02d}-{int(day):02d}'
-            query = "INSERT INTO solar_data (title, link, image, date_ajout) VALUES (%s, %s, %s, %s)"
-            data = (l_title[i], l_lien[i], l_images[i], formatted_date)
-            cursor.execute(query, data)
-        connection.commit()
-        cursor.close()
-        connection.close()
+          l_title = []
+          l_lien = []
+          l_images = []
+          date_ajou = []
+
+          for i in range(len(titles)):
+              l_title.append(titles[i].text)
+              date_ajou.append(date[i].text)
+              l_images.append(link[i].find("img").attrs['src'])
+              l_lien.append(link[i].find("a").attrs['href'])
+
+          for i in range(len(l_title)):
+              day, month_name, year = date_ajou[i].split(' ')
+              month = self.french_month_mapping.get(month_name.lower(), 1)
+              formatted_date = f'{year}-{month:02d}-{int(day):02d}'
+              query = "INSERT INTO scrapeddata (site_id, title, link, image, date_ajout) VALUES (%s, %s, %s, %s, %s)"
+              data = (site_id, l_title[i], l_lien[i], l_images[i], formatted_date)
+              cursor.execute(query, data)
+
+          connection.commit()
+          cursor.close()
+          connection.close()
 
     def get_scraped_data(self):
         connection = self.connect_to_mysql()

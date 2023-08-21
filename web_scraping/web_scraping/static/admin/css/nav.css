@@ -8,8 +8,8 @@
 
 header {
   width: auto;
-  height: auto;position: absolute;
-  top:0;
+  height: auto;
+  position: fixed;
   left: 0;
   right: 0;
   z-index: 999;
@@ -20,27 +20,15 @@ header {
 
 a {
   text-decoration: none;
-  width: max-content;
-}
-
-header a {
-  width: max-content;
-  color: rgb(11, 11, 11) !important;
+  color: rgb(11, 11, 11);
   display: block;
-  font-size: 18px;
-}
-header a:hover, 
-header a:focus {
-  text-decoration: none;
-  color:#1d5d9b !important;
+  width: max-content;
 }
 ul {
   list-style-type: none !important;
   padding: 0;
 }
-ul li {
-  list-style: none;
-}
+
 nav .container {
   display: flex;
   justify-content: space-between;
@@ -58,6 +46,7 @@ ul.topnav {
   overflow: hidden;
   background-color: #ffffff;
   font-weight: 600;
+  font-size: 17px;
 }
 
 .topnav {
@@ -107,7 +96,7 @@ ul.topnav li .user-icon:hover:not(.active) {
   background-color: #ffffff;
   box-shadow: 0 0 4px -1px black;
   right: 16%;
-  top: 70px;
+  top: 64px;
   border-radius: 5px;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
@@ -160,8 +149,5 @@ ul.topnav li .user-icon:hover:not(.active) {
 @media (max-width:769px) {
   .pc-links {
     display: none;
-  }
-  .topnav-phone {
-    right: 10px;
   }
 }

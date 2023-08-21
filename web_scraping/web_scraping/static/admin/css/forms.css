@@ -5,12 +5,17 @@
 
 .form-row {
     overflow: hidden;
+    padding-top: 10px;
     padding-bottom: 10px;
     font-size: 0.8125rem;
     border-bottom: 1px solid var(--hairline-color);
 }
 
-.form-row img, .form-row input {
+.form-row img{
+    vertical-align: middle;
+
+} 
+.form-row input {
     vertical-align: middle;
     width: 100%;
 }
